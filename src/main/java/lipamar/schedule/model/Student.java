@@ -1,6 +1,7 @@
 package lipamar.schedule.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -83,5 +84,25 @@ public class Student extends BaseEntity{
 
     public void setIndex(String index) {
         this.index = index;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return name.equals(student.name) &&
+                lastName.equals(student.lastName) &&
+                Objects.equals(email, student.email) &&
+                password.equals(student.password) &&
+                semester.equals(student.semester) &&
+                studyCourse.equals(student.studyCourse) &&
+                index.equals(student.index) &&
+                Objects.equals(meetings, student.meetings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, lastName, email, password, semester, studyCourse, index, meetings);
     }
 }

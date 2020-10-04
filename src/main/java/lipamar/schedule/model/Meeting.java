@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -54,5 +55,22 @@ public class Meeting extends BaseEntity{
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meeting meeting = (Meeting) o;
+        return title.equals(meeting.title) &&
+                description.equals(meeting.description) &&
+                lecturerInfo.equals(meeting.lecturerInfo) &&
+                date.equals(meeting.date) &&
+                presentStudents.equals(meeting.presentStudents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, lecturerInfo, date, presentStudents);
     }
 }
