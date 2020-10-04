@@ -8,10 +8,10 @@ public interface StudentService {
 
     Set<Student> getStudents();
 
-    void addStudent(Student student);
+    Student addStudent(Student student);
 
-    void delStudent(Student student);
+    Student delStudent(Student student);
 
-    void editStudent(Student student);
+    Student editStudent(Student student);
 
 }

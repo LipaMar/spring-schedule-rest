@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -19,21 +21,32 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Set<Student> getStudents() {
-        return null;
+        return StreamSupport.stream(students.findAll().spliterator(), false).collect(Collectors.toSet());
     }
 
     @Override
-    public void addStudent(Student student) {
-
+    public Student addStudent(Student student) {
+        return students.save(student);
     }
 
     @Override
-    public void delStudent(Student student) {
-
+    public Student delStudent(Student student) {
+        students.delete(student);
+        return student;
     }
 
     @Override
-    public void editStudent(Student student) {
+    public Student editStudent(Student student) {
+        if (!exists(student)) return null;
+        return students.save(student);
+    }
 
+    private boolean exists(Student student) {
+        try {
+            students.findById(student.getId()).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
