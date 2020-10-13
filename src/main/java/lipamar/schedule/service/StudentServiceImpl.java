@@ -26,7 +26,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student addStudent(Student student) {
-        return students.save(student);
+        if(students.findByIndexOrEmail(student.getIndex(),student.getEmail())==null)
+            return students.save(student);
+        else
+            return null;
     }
 
     @Override

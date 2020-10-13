@@ -1,24 +1,35 @@
 package lipamar.schedule.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 public class Student extends BaseEntity {
     @Column
+    @NotNull
     private String name;
     @Column
+    @NotNull
     private String lastName;
     @Column(unique = true)
+    @NotBlank
     private String email;
     @Column
+    @NotNull
     private String password;
     @Column
+    @NotNull
     private Integer semester;
     @Column
+    @NotNull
     private String studyCourse;
     @Column(unique = true)
+    @NotNull
     private String index;
     @Column
     private String role;
@@ -97,11 +108,7 @@ public class Student extends BaseEntity {
     }
 
     public Set<Meeting> getMeetings() {
-        return meetings;
-    }
-
-    public void setMeetings(Set<Meeting> meetings) {
-        this.meetings = meetings;
+        return Collections.unmodifiableSet(meetings);
     }
 
     @Override
