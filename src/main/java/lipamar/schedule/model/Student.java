@@ -5,12 +5,12 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Student extends BaseEntity{
+public class Student extends BaseEntity {
     @Column
     private String name;
     @Column
     private String lastName;
-    @Column
+    @Column(unique = true)
     private String email;
     @Column
     private String password;
@@ -18,15 +18,17 @@ public class Student extends BaseEntity{
     private Integer semester;
     @Column
     private String studyCourse;
-    @Column
+    @Column(unique = true)
     private String index;
+    @Column
+    private String role;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "STUDENT_MEETING",
             joinColumns = {@JoinColumn(name = "student_id")},
             inverseJoinColumns = {@JoinColumn(name = "meeting_id")})
     private Set<Meeting> meetings;
 
-    public Student(){
+    public Student() {
 
     }
 
@@ -84,6 +86,22 @@ public class Student extends BaseEntity{
 
     public void setIndex(String index) {
         this.index = index;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Set<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(Set<Meeting> meetings) {
+        this.meetings = meetings;
     }
 
     @Override
