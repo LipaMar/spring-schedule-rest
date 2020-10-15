@@ -1,19 +1,21 @@
 package lipamar.schedule.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "students", schema = "public")
+@JsonIgnoreProperties("meetings")
 public class Student extends BaseEntity {
-    @Column
+    @Column(name = "first_name")
     @NotNull
     private String name;
-    @Column
+    @Column(name = "last_name")
     @NotNull
     private String lastName;
     @Column(unique = true)
@@ -25,7 +27,7 @@ public class Student extends BaseEntity {
     @Column
     @NotNull
     private Integer semester;
-    @Column
+    @Column(name = "study_course")
     @NotNull
     private String studyCourse;
     @Column(unique = true)
@@ -33,14 +35,10 @@ public class Student extends BaseEntity {
     private String index;
     @Column
     private String role;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "STUDENT_MEETING",
-            joinColumns = {@JoinColumn(name = "student_id")},
-            inverseJoinColumns = {@JoinColumn(name = "meeting_id")})
-    private Set<Meeting> meetings;
+    @OneToMany(mappedBy = "student")
+    private final Set<Presence> meetings = new HashSet<>();
 
     public Student() {
-
     }
 
     public String getName() {
@@ -108,26 +106,6 @@ public class Student extends BaseEntity {
     }
 
     public Set<Meeting> getMeetings() {
-        return Collections.unmodifiableSet(meetings);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return name.equals(student.name) &&
-                lastName.equals(student.lastName) &&
-                Objects.equals(email, student.email) &&
-                password.equals(student.password) &&
-                semester.equals(student.semester) &&
-                studyCourse.equals(student.studyCourse) &&
-                index.equals(student.index) &&
-                Objects.equals(meetings, student.meetings);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, lastName, email, password, semester, studyCourse, index, meetings);
+        return meetings.stream().map(Presence::getMeeting).collect(Collectors.toSet());
     }
 }
