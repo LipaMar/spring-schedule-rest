@@ -1,5 +1,6 @@
 package lipamar.schedule.service;
 
+import lipamar.schedule.model.Meeting;
 import lipamar.schedule.model.Student;
 import lipamar.schedule.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Student getStudent(int id) {
+        return students.findById(id).orElse(null);
+    }
+
+    @Override
     public Student addStudent(Student student) {
-        if(students.findByIndexOrEmail(student.getIndex(),student.getEmail())==null)
+        if (students.findByIndexOrEmail(student.getIndex(), student.getEmail()) == null)
             return students.save(student);
         else
             return null;
@@ -51,5 +57,16 @@ public class StudentServiceImpl implements StudentService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void signUpForMeeting(int studentId, Meeting meeting) throws RuntimeException {
+        Student student = students.findById(studentId).orElse(null);
+        if (meeting != null && student != null) {
+            student.getMeetings().add(meeting);
+            students.save(student);
+        } else
+            throw new RuntimeException("Could not sign up student to the meeting");
+
     }
 }
