@@ -1,24 +1,31 @@
 package lipamar.schedule.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+
+import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
-public class Meeting extends BaseEntity{
+@Table(name = "meetings", schema = "public")
+@JsonIgnoreProperties("signedUpStudents")
+public class Meeting extends BaseEntity {
     @Column
+    @NotBlank
     private String title;
     @Column
     private String description;
-    @Column
+    @Column(name = "lecturer_info")
     private String lecturerInfo;
     @Column
+    @Future
     private Date date;
-    @ManyToMany(mappedBy = "meetings")
-    private Set<Student> presentStudents;
+    @OneToMany(mappedBy = "meeting")
+    private final Set<Presence> signedUpStudents = new HashSet<>();
 
     public Meeting() {
     }
@@ -40,7 +47,6 @@ public class Meeting extends BaseEntity{
     }
 
 
-
     public String getLecturerInfo() {
         return lecturerInfo;
     }
@@ -57,20 +63,7 @@ public class Meeting extends BaseEntity{
         this.date = date;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Meeting meeting = (Meeting) o;
-        return title.equals(meeting.title) &&
-                description.equals(meeting.description) &&
-                lecturerInfo.equals(meeting.lecturerInfo) &&
-                date.equals(meeting.date) &&
-                presentStudents.equals(meeting.presentStudents);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, description, lecturerInfo, date, presentStudents);
+    public Set<Student> getSignedUpStudents() {
+        return signedUpStudents.stream().map(Presence::getStudent).collect(Collectors.toSet());
     }
 }

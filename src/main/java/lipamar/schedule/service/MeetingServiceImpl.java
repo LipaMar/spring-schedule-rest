@@ -6,7 +6,10 @@ import lipamar.schedule.repository.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class MeetingServiceImpl implements MeetingService {
@@ -20,26 +23,44 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public Set<Meeting> getMeetings() {
+        return StreamSupport.stream(meetings.findAll().spliterator(), false).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Meeting getMeeting(int meetingId) {
+        return meetings.findById(meetingId).orElse(null);
+    }
+
+    @Override
+    public Meeting addMeeting(Meeting meeting) {
+        if (new Date().before(meeting.getDate()))
+            return meetings.save(meeting);
         return null;
     }
 
     @Override
-    public void addMeeting(Meeting meeting) {
-        meetings.save(meeting);
-    }
-
-    @Override
-    public void delMeeting(Meeting meeting) {
-
-    }
-
-    @Override
-    public void editMeeting(Meeting meeting) {
+    public Meeting delMeeting(Meeting meeting) {
+        if (new Date().before(meeting.getDate())) {
+            meetings.delete(meeting);
+            return meeting;
+        }
+        return null;
 
     }
 
     @Override
-    public void signUpForMeeting(Student student, Meeting meeting) {
-
+    public Meeting editMeeting(Meeting meeting) {
+        Meeting meetingToUpdate = meetings.findById(meeting.getId()).orElse(null);
+        if (meetingToUpdate != null) {
+            updateMeeting(meeting,meetingToUpdate);
+            return meetings.save(meetingToUpdate);
+        } else
+            return null;
+    }
+    private void updateMeeting(Meeting src, Meeting dst){
+        dst.setDate(src.getDate());
+        dst.setDescription(src.getDescription());
+        dst.setLecturerInfo(src.getLecturerInfo());
+        dst.setTitle(src.getTitle());
     }
 }

@@ -6,11 +6,12 @@ public interface MeetingService {
 
     Set<Meeting> getMeetings();
 
-    void addMeeting(Meeting meeting);
+    Meeting getMeeting(int meetingId);
 
-    void delMeeting(Meeting meeting);
+    Meeting addMeeting(Meeting meeting);
 
-    void editMeeting(Meeting meeting);
+    Meeting delMeeting(Meeting meeting);
 
-    void signUpForMeeting(Student student, Meeting meeting);
+    Meeting editMeeting(Meeting meeting);
+
 }
