@@ -43,24 +43,32 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student delStudent(Student student) {
-        students.delete(student);
-        return student;
+    public Student delStudent(int studentId) {
+        Student student = students.findById(studentId).orElse(null);
+        if (student != null) {
+            students.delete(student);
+            return student;
+        }
+        return null;
     }
 
     @Override
     public Student editStudent(Student student) {
-        if (!exists(student)) return null;
-        return students.save(student);
+        Student studentToUpdate = students.findById(student.getId()).orElse(null);
+        if (studentToUpdate == null) throw new RuntimeException("Student who was tried to edit does not exist");
+        updateStudent(student,studentToUpdate);
+        return students.save(studentToUpdate);
     }
 
-    private boolean exists(Student student) {
-        try {
-            students.findById(student.getId()).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    private void updateStudent(Student src, Student dst) {
+        dst.setStudyCourse(src.getStudyCourse());
+        dst.setSemester(src.getSemester());
+        dst.setRole(src.getRole());
+        dst.setPassword(src.getPassword());
+        dst.setIndex(src.getIndex());
+        dst.setEmail(src.getEmail());
+        dst.setName(src.getName());
+        dst.setLastName(src.getLastName());
     }
 
     @Override

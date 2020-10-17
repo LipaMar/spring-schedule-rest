@@ -13,7 +13,7 @@ public interface StudentService {
 
     Student addStudent(Student student);
 
-    Student delStudent(Student student);
+    Student delStudent(int studentId);
 
     Student editStudent(Student student);
 

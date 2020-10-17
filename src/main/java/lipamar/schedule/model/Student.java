@@ -34,7 +34,7 @@ public class Student extends BaseEntity {
     @NotNull
     private String index;
     @Column
-    private String role;
+    private String role="ROLE_STUDENT";
     @OneToMany(mappedBy = "student")
     private final Set<Presence> meetings = new HashSet<>();
 
