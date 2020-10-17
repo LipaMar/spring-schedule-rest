@@ -1,7 +1,9 @@
 package lipamar.schedule.service;
 
 import lipamar.schedule.model.Meeting;
+import lipamar.schedule.model.Presence;
 import lipamar.schedule.model.Student;
+import lipamar.schedule.repository.PresenceRepository;
 import lipamar.schedule.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,12 @@ import java.util.stream.StreamSupport;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository students;
+    private final PresenceRepository presenceRepository;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository students) {
+    public StudentServiceImpl(StudentRepository students, PresenceRepository presenceRepository) {
         this.students = students;
+        this.presenceRepository = presenceRepository;
     }
 
     @Override
@@ -62,11 +66,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void signUpForMeeting(int studentId, Meeting meeting) throws RuntimeException {
         Student student = students.findById(studentId).orElse(null);
-        if (meeting != null && student != null) {
-            student.getMeetings().add(meeting);
-            students.save(student);
-        } else
-            throw new RuntimeException("Could not sign up student to the meeting");
+        if (meeting == null) {
+            throw new RuntimeException("Meeting");
+        } else if (student == null) {
+            throw new RuntimeException("Student");
+        } else {
+            try {
+                Presence presence = new Presence();
+                presence.setMeeting(meeting);
+                presence.setStudent(student);
+                presenceRepository.save(presence);
+            } catch (Exception e) {
+                throw new RuntimeException("The same student cannot be signed up multiple times for one meeting");
+            }
+        }
 
     }
 }

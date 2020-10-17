@@ -1,11 +1,9 @@
 package lipamar.schedule.model;
 
-
 import javax.persistence.*;
-import java.security.AllPermission;
 
 @Entity
-@Table(name = "students_meetings", schema = "public")
+@Table(name = "students_meetings", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = {"m_id", "s_id"}))
 public class Presence extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
@@ -17,7 +15,7 @@ public class Presence extends BaseEntity {
     private Meeting meeting;
 
     @Column
-    private Boolean present;
+    private Boolean present = false;
 
     public Presence() {
     }
