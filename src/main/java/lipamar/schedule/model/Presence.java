@@ -2,17 +2,18 @@ package lipamar.schedule.model;
 
 
 import javax.persistence.*;
+import java.security.AllPermission;
 
 @Entity
 @Table(name = "students_meetings", schema = "public")
 public class Presence extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER,optional = false)
-    @JoinColumn(name = "m_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "s_id")
     private Student student;
 
-    @ManyToOne(fetch = FetchType.EAGER,optional = false)
-    @JoinColumn(name = "s_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "m_id")
     private Meeting meeting;
 
     @Column
