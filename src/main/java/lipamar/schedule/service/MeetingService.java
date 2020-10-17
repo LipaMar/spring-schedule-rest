@@ -10,7 +10,7 @@ public interface MeetingService {
 
     Meeting addMeeting(Meeting meeting);
 
-    Meeting delMeeting(Meeting meeting);
+    Meeting delMeeting(int meetingId);
 
     Meeting editMeeting(Meeting meeting);
 

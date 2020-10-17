@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 @RestController
@@ -48,7 +51,15 @@ public class MeetingRestController {
         return new ResponseEntity<>(meetingService.editMeeting(newMeeting),HttpStatus.OK);
 
     }
+    @DeleteMapping("/{meetingId}")
+    public ResponseEntity<Meeting> delMeeting(@PathVariable int meetingId){
+        Meeting meeting = meetingService.getMeeting(meetingId);
+        if(new Date().after(meeting.getDate())){
+            throw new ValidationFailedException(Collections.singletonList(new ObjectError("Error", "Meetings that have already taken place cannot be deleted")));
+        }
+        return new ResponseEntity<>(meetingService.delMeeting(meetingId),HttpStatus.OK);
 
+    }
     @GetMapping("/{meetingId}")
     public ResponseEntity<Meeting> getMeeting(@PathVariable int meetingId) {
         Meeting meeting = meetingService.getMeeting(meetingId);

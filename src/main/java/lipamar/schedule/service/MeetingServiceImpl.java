@@ -39,8 +39,9 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public Meeting delMeeting(Meeting meeting) {
-        if (new Date().before(meeting.getDate())) {
+    public Meeting delMeeting(int meetingId) {
+        Meeting meeting = meetings.findById(meetingId).orElse(null);
+        if (meeting != null) {
             meetings.delete(meeting);
             return meeting;
         }
