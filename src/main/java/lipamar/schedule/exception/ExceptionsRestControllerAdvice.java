@@ -11,4 +11,8 @@ public class ExceptionsRestControllerAdvice {
     public ResponseEntity<String> handleValidationError(ValidationFailedException ex){
         return new ResponseEntity<>(ex.getErrorsAsJSON(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
