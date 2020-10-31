@@ -1,6 +1,7 @@
 package lipamar.schedule.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "students_meetings", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = {"m_id", "s_id"}))
@@ -42,5 +43,21 @@ public class Presence extends BaseEntity {
 
     public void setPresent(Boolean present) {
         this.present = present;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Presence presence = (Presence) o;
+        return Objects.equals(getId(), presence.getId()) &&
+                Objects.equals(student, presence.student) &&
+                Objects.equals(meeting, presence.meeting) &&
+                Objects.equals(present, presence.present);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(student, meeting, present);
     }
 }

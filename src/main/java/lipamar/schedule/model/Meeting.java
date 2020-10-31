@@ -66,4 +66,21 @@ public class Meeting extends BaseEntity {
     public Set<Student> getSignedUpStudents() {
         return signedUpStudents.stream().map(Presence::getStudent).collect(Collectors.toSet());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meeting meeting = (Meeting) o;
+        return Objects.equals(getId(), meeting.getId()) &&
+                Objects.equals(title, meeting.title) &&
+                Objects.equals(description, meeting.description) &&
+                Objects.equals(lecturerInfo, meeting.lecturerInfo) &&
+                Objects.equals(date, meeting.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, lecturerInfo, date);
+    }
 }

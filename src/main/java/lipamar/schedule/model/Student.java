@@ -108,4 +108,25 @@ public class Student extends BaseEntity {
     public Set<Meeting> getMeetings() {
         return meetings.stream().map(Presence::getMeeting).collect(Collectors.toSet());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(getId(), student.getId()) &&
+                Objects.equals(name, student.name) &&
+                Objects.equals(lastName, student.lastName) &&
+                Objects.equals(email, student.email) &&
+                Objects.equals(password, student.password) &&
+                Objects.equals(semester, student.semester) &&
+                Objects.equals(studyCourse, student.studyCourse) &&
+                Objects.equals(index, student.index) &&
+                Objects.equals(role, student.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, lastName, email, password, semester, studyCourse, index, role);
+    }
 }
