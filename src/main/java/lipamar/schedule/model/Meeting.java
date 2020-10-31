@@ -24,7 +24,7 @@ public class Meeting extends BaseEntity {
     @Column
     @Future
     private Date date;
-    @OneToMany(mappedBy = "meeting")
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
     private final Set<Presence> signedUpStudents = new HashSet<>();
 
     public Meeting() {

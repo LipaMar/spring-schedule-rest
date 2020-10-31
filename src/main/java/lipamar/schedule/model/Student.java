@@ -35,7 +35,7 @@ public class Student extends BaseEntity {
     private String index;
     @Column
     private String role="ROLE_STUDENT";
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private final Set<Presence> meetings = new HashSet<>();
 
     public Student() {

@@ -7,11 +7,11 @@ import java.util.Objects;
 @Table(name = "students_meetings", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = {"m_id", "s_id"}))
 public class Presence extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false )
     @JoinColumn(name = "s_id")
     private Student student;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "m_id")
     private Meeting meeting;
 
