@@ -33,7 +33,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public Meeting addMeeting(Meeting meeting) {
-        if (new Date().before(meeting.getDate()))
+        if (meeting.getDate() != null && new Date().before(meeting.getDate()))
             return meetings.save(meeting);
         return null;
     }
