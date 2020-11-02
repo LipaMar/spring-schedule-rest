@@ -1,11 +1,14 @@
 package lipamar.schedule.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -35,7 +38,7 @@ public class Student extends BaseEntity {
     private String index;
     @Column
     private String role="ROLE_STUDENT";
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private final Set<Presence> meetings = new HashSet<>();
 
     public Student() {
@@ -105,6 +108,7 @@ public class Student extends BaseEntity {
         this.role = role;
     }
 
+    @Transactional
     public Set<Meeting> getMeetings() {
         return meetings.stream().map(Presence::getMeeting).collect(Collectors.toSet());
     }

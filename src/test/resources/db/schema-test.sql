@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS public.students_meetings
     m_id    INT NOT NULL,
     s_id    INT NOT NULL,
     present BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (m_id) REFERENCES meetings (id),
-    FOREIGN KEY (s_id) REFERENCES students (id),
+    FOREIGN KEY (m_id) REFERENCES meetings (id) ON DELETE CASCADE,
+    FOREIGN KEY (s_id) REFERENCES students (id) ON DELETE CASCADE,
     UNIQUE (m_id, s_id)
 );

@@ -16,8 +16,6 @@ values (2, 'nibh ligula nec sem duis aliquam', 'fermentum justo',
         '2021-02-13 00:08:10');
 
 insert into students_meetings (m_id, s_id)
-values (1, 1);
-insert into students_meetings (m_id, s_id)
 values (1, 2);
 insert into students_meetings (m_id, s_id)
 values (2, 1);
