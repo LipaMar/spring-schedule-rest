@@ -19,8 +19,7 @@ public class MeetingServiceIntegrationTest {
     @Autowired
     private MeetingService service;
 
-    @Test
-    void whenAddValidMeeting_expectGetMeetingsContainAddedMeeting() {
+    static Meeting createValidMeeting(){
         Meeting meeting = new Meeting();
         meeting.setTitle("Tytuł");
         meeting.setLecturerInfo("Info");
@@ -28,7 +27,12 @@ public class MeetingServiceIntegrationTest {
         Calendar futureDate = Calendar.getInstance();
         futureDate.add(Calendar.DAY_OF_YEAR, 1);
         meeting.setDate(futureDate.getTime());
-        Meeting addedMeeting = service.addMeeting(meeting);
+        return meeting;
+    }
+
+    @Test
+    void whenAddValidMeeting_expectGetMeetingsContainAddedMeeting() {
+        Meeting addedMeeting = service.addMeeting(createValidMeeting());
         assertTrue(service.getMeetings().contains(addedMeeting));
     }
     @Test

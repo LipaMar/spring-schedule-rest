@@ -3,6 +3,7 @@ package lipamar.schedule.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeId;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -63,6 +64,7 @@ public class Meeting extends BaseEntity {
         this.date = date;
     }
 
+    @Transactional
     public Set<Student> getSignedUpStudents() {
         return signedUpStudents.stream().map(Presence::getStudent).collect(Collectors.toSet());
     }
